@@ -25,7 +25,7 @@ void setup() {
 void loop(){
   valA = digitalRead(inputPinA);  // read input value
   valB = digitalRead(inputPinB);  // read input value
-  
+  int deb0=0;
   
   if (valA == HIGH) {            // check if the input is HIGH
     //digitalWrite(ledPinA, HIGH);  // turn LED ON
@@ -34,7 +34,25 @@ void loop(){
       Serial.println("Motion (A) detected!");
       // We only want to print on the output change, not state
       pirStateA = HIGH;
-    }
+    
+      if (valB == HIGH) {            // check if the input is HIGH
+         digitalWrite(ledPinB, HIGH);  // turn LED ON
+         if (pirStateB == LOW) {
+         // we have just turned on
+         Serial.println("Motion (B) detected!");
+         // We only want to print on the output change, not state
+         pirStateB = HIGH;
+         }  
+      } else {
+         digitalWrite(ledPinB, LOW); // turn LED OFF
+         if (pirStateB == HIGH){
+         // we have just turned of
+         Serial.println("Motion (B) ended!");
+         // We only want to print on the output change, not state
+         pirStateB = LOW;
+        }
+      }
+        } 
   } else {
     //digitalWrite(ledPinA, LOW); // turn LED OFF
     if (pirStateA == HIGH){
@@ -44,21 +62,5 @@ void loop(){
       pirStateA = LOW;
     }
   }
-  if (valB == HIGH) {            // check if the input is HIGH
-    digitalWrite(ledPinB, HIGH);  // turn LED ON
-    if (pirStateB == LOW) {
-      // we have just turned on
-      Serial.println("Motion (B) detected!");
-      // We only want to print on the output change, not state
-      pirStateB = HIGH;
-    }
-  } else {
-    digitalWrite(ledPinB, LOW); // turn LED OFF
-    if (pirStateB == HIGH){
-      // we have just turned of
-      Serial.println("Motion (B) ended!");
-      // We only want to print on the output change, not state
-      pirStateB = LOW;
-    }
-  }
+  
 }
